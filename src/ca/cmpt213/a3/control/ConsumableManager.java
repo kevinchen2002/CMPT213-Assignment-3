@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
@@ -35,6 +36,19 @@ public class ConsumableManager {
 
     public void removeConsumable(int index) {
         consumableList.remove(index);
+    }
+
+    public ArrayList<Consumable> getAllConsumables() {
+        return consumableList;
+    }
+
+    public String getAllConsumablesString() {
+        String bigString = "";
+        for (int i = 0; i < consumableList.size(); i++) {
+            String consumableString = "No. " + (i+1) + "\n" + consumableList.get(i);
+            bigString += consumableString + "\n\n";
+        }
+        return bigString;
     }
 
     public ArrayList<Consumable> getExpiredList() {
