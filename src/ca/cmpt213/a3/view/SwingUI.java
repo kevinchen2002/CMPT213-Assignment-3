@@ -11,7 +11,6 @@ import java.util.ArrayList;
 
 public class SwingUI {
     JFrame applicationFrame;
-    JButton addNewButton;
     JTextPane displayPane;
     JScrollPane consumableListView;
 
@@ -28,7 +27,7 @@ public class SwingUI {
         setupListView();
         viewAllConsumables();
 
-        setupAddButton();
+        setupAddRemoveButton();
 
         applicationFrame.setSize(700, 700);
         applicationFrame.pack();
@@ -65,13 +64,18 @@ public class SwingUI {
         applicationFrame.add(consumableListView);
     }
 
-    private void setupAddButton() {
-        addNewButton = new JButton("Add");
-        JPanel addPanel = new JPanel();
-        addPanel.add(addNewButton);
-        addPanel.setSize(800, 100);
-        addPanel.setPreferredSize(new Dimension(800, 100));
-        addPanel(addPanel, applicationFrame);
+    private void setupAddRemoveButton() {
+        JButton addNewButton = new JButton("Add");
+        JButton removeButton = new JButton("Remove");
+
+        JPanel addRemovePanel = new JPanel();
+        addRemovePanel.setLayout(new BoxLayout(addRemovePanel, BoxLayout.X_AXIS));
+
+        addRemovePanel.add(addNewButton);
+        addRemovePanel.add(removeButton);
+        addRemovePanel.setSize(800, 100);
+        addRemovePanel.setPreferredSize(new Dimension(800, 100));
+        addPanel(addRemovePanel, applicationFrame);
     }
 
     private static void addPanel(JPanel jpanel, Container container) {
