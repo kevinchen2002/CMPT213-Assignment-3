@@ -18,7 +18,8 @@ public class SwingUI {
         showAllButton = new JButton("View All");
         JPanel listTabsPanel = new JPanel();
         listTabsPanel.add(showAllButton);
-        listTabsPanel.setSize(800, 150);
+        listTabsPanel.setSize(800, 100);
+        listTabsPanel.setPreferredSize(new Dimension(800, 100));
         addPanel(listTabsPanel, applicationFrame);
 
         consumableListView = new JScrollPane();
@@ -27,15 +28,17 @@ public class SwingUI {
         consumableListView.add(dummy);
         listViewPanel.add(consumableListView);
         listViewPanel.setSize(800, 500);
+        listViewPanel.setPreferredSize(new Dimension(800, 500));
         addPanel(listViewPanel, applicationFrame);
 
         addNewButton = new JButton("Add");
         JPanel addPanel = new JPanel();
         addPanel.add(addNewButton);
-        addPanel.setSize(800, 150);
+        addPanel.setSize(800, 100);
+        addPanel.setPreferredSize(new Dimension(800, 100));
         addPanel(addPanel, applicationFrame);
 
-        applicationFrame.setSize(800, 800);
+        applicationFrame.setSize(700, 700);
         applicationFrame.pack();
         applicationFrame.setVisible(true);
     }
