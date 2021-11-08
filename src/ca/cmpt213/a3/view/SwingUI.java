@@ -9,9 +9,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-
-//TODO: make the buttons do something and make them tell what
 
 public class SwingUI implements ActionListener {
     JFrame applicationFrame;
@@ -131,9 +128,41 @@ public class SwingUI implements ActionListener {
         return -1;
     }
 
+    private double getDouble(String message) {
+        try {
+            return Integer.parseInt(JOptionPane.showInputDialog(message));
+        } catch (NumberFormatException nfe) {
+            //do nothing
+        }
+        return -1;
+    }
+
+    private String getString(String message) {
+        return JOptionPane.showInputDialog(message);
+    }
+
+    /**
+     * code derived from https://mkyong.com/swing/java-swing-joptionpane-showoptiondialog-example/
+     * @return the option 0 for food or 1 for drink.
+     */
+    private int getFoodOrDrink() {
+        String[] options = {"Food", "Drink"};
+        return JOptionPane.showOptionDialog(null, "Is this a Food or Drink?",
+                "Click a button",
+                JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE,
+                null, options, options[0]);
+    }
+
+    private void addConsumable() {
+        int itemType = getFoodOrDrink() + 1;
+        if (itemType == 0) {
+            return;
+        }
+
+    }
+
     private void removeConsumable() {
-        int toDelete;
-        toDelete = getInteger("Which consumable would you like to delete?");
+        int toDelete = getInteger("Which consumable would you like to delete?");
         if (toDelete < 1 || toDelete > consumableManager.getSize()) {
             displayPane.setText("INVALID - please give a number from 1 to " + consumableManager.getSize() + ".");
             return;
@@ -153,7 +182,7 @@ public class SwingUI implements ActionListener {
         } else if (e.getActionCommand() == "Expiring in 7 Days") {
             viewExpiringSevenDays();
         } else if (e.getActionCommand() == "Add") {
-            displayPane.setText("Add");
+            addConsumable();
         } else if (e.getActionCommand() == "Remove") {
             removeConsumable();
         }
