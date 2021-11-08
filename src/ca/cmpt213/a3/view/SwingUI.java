@@ -108,15 +108,15 @@ public class SwingUI implements ActionListener {
     }
 
     private void viewExpired() {
-
+        displayPane.setText(consumableManager.getExpiredString());
     }
 
     private void viewNotExpired() {
-
+        displayPane.setText(consumableManager.getNotExpiredString());
     }
 
     private void viewExpiringSevenDays() {
-
+        displayPane.setText(consumableManager.getExpiringSevenDaysString());
     }
 
     @Override
@@ -124,11 +124,11 @@ public class SwingUI implements ActionListener {
         if (e.getActionCommand() == "All") {
             viewAllConsumables();
         } else if (e.getActionCommand() == "Expired") {
-            displayPane.setText("Expired");
+            viewExpired();
         } else if (e.getActionCommand() == "Not Expired") {
-            displayPane.setText("Not Expired");
-        } else if (e.getActionCommand() == "Expiring in Seven Days") {
-            displayPane.setText("Expiring in Seven Days");
+            viewNotExpired();
+        } else if (e.getActionCommand() == "Expiring in 7 Days") {
+            viewExpiringSevenDays();
         }
     }
 }

@@ -43,12 +43,69 @@ public class ConsumableManager {
     }
 
     public String getAllConsumablesString() {
+        if (consumableList.isEmpty()) {
+            return "There are no consumable items!";
+        }
         String bigString = "";
         for (int i = 0; i < consumableList.size(); i++) {
             String consumableString = "No. " + (i+1) + "\n" + consumableList.get(i);
             bigString += consumableString + "\n\n";
         }
         return bigString;
+    }
+
+    public String getExpiredString() {
+        if (consumableList.isEmpty()) {
+            return "There are no consumable items!";
+        }
+        String bigString = "";
+        for (int i = 0; i < consumableList.size(); i++) {
+            if (consumableList.get(i).isExpired()) {
+                String consumableString = "No. " + (i + 1) + "\n" + consumableList.get(i);
+                bigString += consumableString + "\n\n";
+            }
+        }
+        if (bigString != "") {
+            return bigString;
+        } else {
+            return "There are no expired consumable items!";
+        }
+    }
+
+    public String getNotExpiredString() {
+        if (consumableList.isEmpty()) {
+            return "There are no consumable items!";
+        }
+        String bigString = "";
+        for (int i = 0; i < consumableList.size(); i++) {
+            if (!consumableList.get(i).isExpired()) {
+                String consumableString = "No. " + (i + 1) + "\n" + consumableList.get(i);
+                bigString += consumableString + "\n\n";
+            }
+        }
+        if (bigString != "") {
+            return bigString;
+        } else {
+            return "All consumable items are expired!";
+        }
+    }
+
+    public String getExpiringSevenDaysString() {
+        if (consumableList.isEmpty()) {
+            return "There are no consumable items!";
+        }
+        String bigString = "";
+        for (int i = 0; i < consumableList.size(); i++) {
+            if (consumableList.get(i).getDaysUntilExp() <= 7 && !consumableList.get(i).isExpired()) {
+                String consumableString = "No. " + (i + 1) + "\n" + consumableList.get(i);
+                bigString += consumableString + "\n\n";
+            }
+        }
+        if (bigString != "") {
+            return bigString;
+        } else {
+            return "There are no consumable items expiring within 7 days!";
+        }
     }
 
     public ArrayList<Consumable> getExpiredList() {
