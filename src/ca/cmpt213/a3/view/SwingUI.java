@@ -52,10 +52,10 @@ public class SwingUI implements ActionListener {
         JButton showNotExpiredButton = new JButton("Not Expired");
         JButton showExpiringSevenButton = new JButton("Expiring in 7 Days");
 
-        showAllButton.addActionListener(this::actionPerformed);
-        showExpiredButton.addActionListener(this::actionPerformed);
-        showNotExpiredButton.addActionListener(this::actionPerformed);
-        showExpiringSevenButton.addActionListener(this::actionPerformed);
+        showAllButton.addActionListener(this);
+        showExpiredButton.addActionListener(this);
+        showNotExpiredButton.addActionListener(this);
+        showExpiringSevenButton.addActionListener(this);
 
         JPanel listTabsPanel = new JPanel();
         listTabsPanel.setLayout(new BoxLayout(listTabsPanel, BoxLayout.X_AXIS));
@@ -85,8 +85,8 @@ public class SwingUI implements ActionListener {
         JButton addNewButton = new JButton("Add");
         JButton removeButton = new JButton("Remove");
 
-        addNewButton.addActionListener(this::actionPerformed);
-        removeButton.addActionListener(this::actionPerformed);
+        addNewButton.addActionListener(this);
+        removeButton.addActionListener(this);
 
         JPanel addRemovePanel = new JPanel();
         addRemovePanel.setLayout(new BoxLayout(addRemovePanel, BoxLayout.X_AXIS));
@@ -158,7 +158,12 @@ public class SwingUI implements ActionListener {
         if (itemType == 0) {
             return;
         }
-
+        boolean isFood;
+        isFood = itemType == 1;
+        String name = getString("What is the name of this item?");
+        while (name.equals("")) {
+            name = getString("The name cannot be empty.");
+        }
     }
 
     private void removeConsumable() {
