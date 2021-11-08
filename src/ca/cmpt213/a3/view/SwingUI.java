@@ -6,10 +6,14 @@ import ca.cmpt213.a3.model.Consumable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class SwingUI {
+//TODO: make the buttons do something and make them tell what
+
+public class SwingUI implements ActionListener {
     JFrame applicationFrame;
     JTextPane displayPane;
     JScrollPane consumableListView;
@@ -23,15 +27,26 @@ public class SwingUI {
         applicationFrame.setLayout(new BoxLayout(applicationFrame.getContentPane(), BoxLayout.Y_AXIS));
 
         setupTopButtons();
-
         setupListView();
-        viewAllConsumables();
-
         setupAddRemoveButton();
 
         applicationFrame.setSize(700, 700);
         applicationFrame.pack();
         applicationFrame.setVisible(true);
+
+        //DEBUG STUFF
+        Consumable newItem = ConsumableFactory.getInstance(true, "food", "this is food", 1, 1, LocalDateTime.now());
+        consumableManager.addConsumable(newItem);
+        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
+        consumableManager.addConsumable(newItem);
+        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
+        consumableManager.addConsumable(newItem);
+        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
+        consumableManager.addConsumable(newItem);
+        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
+        consumableManager.addConsumable(newItem);
+        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
+        consumableManager.addConsumable(newItem);
     }
 
     private void setupTopButtons() {
@@ -39,6 +54,11 @@ public class SwingUI {
         JButton showExpiredButton = new JButton("Expired");
         JButton showNotExpiredButton = new JButton("Not Expired");
         JButton showExpiringSevenButton = new JButton("Expiring in 7 Days");
+
+        showAllButton.addActionListener(this::actionPerformed);
+        showExpiredButton.addActionListener(this::actionPerformed);
+        showNotExpiredButton.addActionListener(this::actionPerformed);
+        showExpiringSevenButton.addActionListener(this::actionPerformed);
 
         JPanel listTabsPanel = new JPanel();
         listTabsPanel.setLayout(new BoxLayout(listTabsPanel, BoxLayout.X_AXIS));
@@ -84,20 +104,31 @@ public class SwingUI {
     }
 
     private void viewAllConsumables() {
-        Consumable newItem = ConsumableFactory.getInstance(true, "food", "this is food", 1, 1, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-
         displayPane.setText(consumableManager.getAllConsumablesString());
+    }
+
+    private void viewExpired() {
+
+    }
+
+    private void viewNotExpired() {
+
+    }
+
+    private void viewExpiringSevenDays() {
+
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getActionCommand() == "All") {
+            viewAllConsumables();
+        } else if (e.getActionCommand() == "Expired") {
+            displayPane.setText("Expired");
+        } else if (e.getActionCommand() == "Not Expired") {
+            displayPane.setText("Not Expired");
+        } else if (e.getActionCommand() == "Expiring in Seven Days") {
+            displayPane.setText("Expiring in Seven Days");
+        }
     }
 }
