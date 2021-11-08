@@ -34,6 +34,10 @@ public class ConsumableManager {
         Collections.sort(consumableList);
     }
 
+    public int getSize() {
+        return consumableList.size();
+    }
+
     public void removeConsumable(int index) {
         consumableList.remove(index);
     }

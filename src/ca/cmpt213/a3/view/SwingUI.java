@@ -88,6 +88,9 @@ public class SwingUI implements ActionListener {
         JButton addNewButton = new JButton("Add");
         JButton removeButton = new JButton("Remove");
 
+        addNewButton.addActionListener(this::actionPerformed);
+        removeButton.addActionListener(this::actionPerformed);
+
         JPanel addRemovePanel = new JPanel();
         addRemovePanel.setLayout(new BoxLayout(addRemovePanel, BoxLayout.X_AXIS));
 
@@ -119,6 +122,26 @@ public class SwingUI implements ActionListener {
         displayPane.setText(consumableManager.getExpiringSevenDaysString());
     }
 
+    private int getInteger(String message) {
+        try {
+            return Integer.parseInt(JOptionPane.showInputDialog(message));
+        } catch (NumberFormatException nfe) {
+            //do nothing
+        }
+        return -1;
+    }
+
+    private void removeConsumable() {
+        int toDelete;
+        toDelete = getInteger("Which consumable would you like to delete?");
+        if (toDelete < 1 || toDelete > consumableManager.getSize()) {
+            displayPane.setText("INVALID - please give a number from 1 to " + consumableManager.getSize() + ".");
+            return;
+        }
+        consumableManager.removeConsumable(toDelete-1);
+        displayPane.setText("Item #" + toDelete + " has been removed!");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() == "All") {
@@ -129,6 +152,10 @@ public class SwingUI implements ActionListener {
             viewNotExpired();
         } else if (e.getActionCommand() == "Expiring in 7 Days") {
             viewExpiringSevenDays();
+        } else if (e.getActionCommand() == "Add") {
+            displayPane.setText("Add");
+        } else if (e.getActionCommand() == "Remove") {
+            removeConsumable();
         }
     }
 }
