@@ -130,7 +130,7 @@ public class SwingUI implements ActionListener {
 
     private double getDouble(String message) {
         try {
-            return Integer.parseInt(JOptionPane.showInputDialog(message));
+            return Double.parseDouble(JOptionPane.showInputDialog(message));
         } catch (NumberFormatException nfe) {
             //do nothing
         }
@@ -185,6 +185,12 @@ public class SwingUI implements ActionListener {
         if (weightOrVolume < 0) {
             weightOrVolume = getDouble("The " + dataType + " cannot be less than 0.");
         }
+
+        Consumable newConsumable = ConsumableFactory.getInstance(isFood, name, notes,
+                price, weightOrVolume, LocalDateTime.now());
+
+        consumableManager.addConsumable(newConsumable);
+        displayPane.setText("Item " + name + " has been added!");
     }
 
     private void removeConsumable() {
