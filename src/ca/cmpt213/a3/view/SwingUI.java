@@ -159,10 +159,31 @@ public class SwingUI implements ActionListener {
             return;
         }
         boolean isFood;
-        isFood = itemType == 1;
-        String name = getString("What is the name of this item?");
+        String consumableType;
+        String dataType;
+        if (itemType == 1) {
+            isFood = true;
+            consumableType = "food";
+            dataType = "weight";
+        } else {
+            isFood = false;
+            consumableType = "drink";
+            dataType = "volume";
+        }
+        String name = getString("What is the name of this " + consumableType + "?");
         while (name.equals("")) {
             name = getString("The name cannot be empty.");
+        }
+        String notes = getString("Enter any notes about this " + consumableType + ".");
+
+        double price = getDouble("What is the price of this " + consumableType + "?");
+        while (price < 0) {
+            price = getDouble("The price cannot be less than 0.");
+        }
+
+        double weightOrVolume = getDouble("Enter the " + dataType + " of this " + consumableType + " item: ");
+        if (weightOrVolume < 0) {
+            weightOrVolume = getDouble("The " + dataType + " cannot be less than 0.");
         }
     }
 
