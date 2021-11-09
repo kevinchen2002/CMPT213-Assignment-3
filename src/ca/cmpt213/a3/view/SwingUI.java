@@ -8,7 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.DateTimeException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class SwingUI implements ActionListener {
     JFrame applicationFrame;
@@ -30,20 +32,6 @@ public class SwingUI implements ActionListener {
         applicationFrame.setSize(700, 700);
         applicationFrame.pack();
         applicationFrame.setVisible(true);
-
-        //DEBUG STUFF
-        Consumable newItem = ConsumableFactory.getInstance(true, "food", "this is food", 1, 1, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
-        newItem = ConsumableFactory.getInstance(false, "drink", "this is drink", 2, 2, LocalDateTime.now());
-        consumableManager.addConsumable(newItem);
     }
 
     private void setupTopButtons() {
@@ -121,7 +109,11 @@ public class SwingUI implements ActionListener {
 
     private int getInteger(String message) {
         try {
-            return Integer.parseInt(JOptionPane.showInputDialog(message));
+            String input = JOptionPane.showInputDialog(message);
+            if (input == null) {
+                return -1;
+            }
+            return Integer.parseInt(input);
         } catch (NumberFormatException nfe) {
             //do nothing
         }
@@ -130,7 +122,11 @@ public class SwingUI implements ActionListener {
 
     private double getDouble(String message) {
         try {
-            return Double.parseDouble(JOptionPane.showInputDialog(message));
+            String input = JOptionPane.showInputDialog(message);
+            if (input == null) {
+                return -1;
+            }
+            return Double.parseDouble(input);
         } catch (NumberFormatException nfe) {
             //do nothing
         }
@@ -139,6 +135,39 @@ public class SwingUI implements ActionListener {
 
     private String getString(String message) {
         return JOptionPane.showInputDialog(message);
+    }
+
+    private LocalDateTime getDateTime() {
+        int year;
+        int month;
+        int day;
+        while (true) {
+            try {
+                final int MIN_YEAR = 2000;
+                year = getInteger("Enter the year of the expiry date: ");
+                while (year < MIN_YEAR) {
+                    year = getInteger("The year cannot be before 2000.");
+                }
+
+                final int MIN_MONTH = 1;
+                final int MAX_MONTH = 12;
+                month = getInteger("Enter the month of the expiry date:");
+                while (month < MIN_MONTH || month > MAX_MONTH) {
+                    month = getInteger("The month must be between 1 and 12.");
+                }
+
+                final int MIN_DAY = 1;
+                final int MAX_DAY = 31;
+                day = getInteger("Enter the day of the expiry date: ");
+                while (day < MIN_DAY || day > MAX_DAY) {
+                    day = getInteger("The day must be between 1 and 31.");
+                }
+
+                return LocalDateTime.of(year, month, day, 23, 59);
+            } catch (DateTimeException e) {
+                JOptionPane.showMessageDialog(null, "This date does not exist! Please try again.");
+            }
+        }
     }
 
     /**
@@ -171,23 +200,38 @@ public class SwingUI implements ActionListener {
             dataType = "volume";
         }
         String name = getString("What is the name of this " + consumableType + "?");
+        if (name == null) {
+            return;
+        }
         while (name.equals("")) {
             name = getString("The name cannot be empty.");
         }
+
         String notes = getString("Enter any notes about this " + consumableType + ".");
+        if (notes == null) {
+            return;
+        }
 
         double price = getDouble("What is the price of this " + consumableType + "?");
+        if (price == -1) {
+            return;
+        }
         while (price < 0) {
             price = getDouble("The price cannot be less than 0.");
         }
 
         double weightOrVolume = getDouble("Enter the " + dataType + " of this " + consumableType + " item: ");
+        if (weightOrVolume == -1) {
+            return;
+        }
         if (weightOrVolume < 0) {
             weightOrVolume = getDouble("The " + dataType + " cannot be less than 0.");
         }
 
+        LocalDateTime expiry = getDateTime();
+
         Consumable newConsumable = ConsumableFactory.getInstance(isFood, name, notes,
-                price, weightOrVolume, LocalDateTime.now());
+                price, weightOrVolume, expiry);
 
         consumableManager.addConsumable(newConsumable);
         displayPane.setText("Item " + name + " has been added!");
@@ -205,17 +249,17 @@ public class SwingUI implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (e.getActionCommand() == "All") {
+        if (Objects.equals(e.getActionCommand(), "All")) {
             viewAllConsumables();
-        } else if (e.getActionCommand() == "Expired") {
+        } else if (Objects.equals(e.getActionCommand(), "Expired")) {
             viewExpired();
-        } else if (e.getActionCommand() == "Not Expired") {
+        } else if (Objects.equals(e.getActionCommand(), "Not Expired")) {
             viewNotExpired();
-        } else if (e.getActionCommand() == "Expiring in 7 Days") {
+        } else if (Objects.equals(e.getActionCommand(), "Expiring in 7 Days")) {
             viewExpiringSevenDays();
-        } else if (e.getActionCommand() == "Add") {
+        } else if (Objects.equals(e.getActionCommand(), "Add")) {
             addConsumable();
-        } else if (e.getActionCommand() == "Remove") {
+        } else if (Objects.equals(e.getActionCommand(), "Remove")) {
             removeConsumable();
         }
     }
