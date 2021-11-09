@@ -23,9 +23,33 @@ public class AddConsumableUI extends JDialog implements ActionListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         consumableTypeSelect = new JComboBox<String>(typeOptions);
-        panel.add(consumableTypeSelect);
+        consumableTypeSelect.setSelectedIndex(-1);
+        consumableTypeSelect.setPreferredSize(new Dimension(500, 30));
+        consumableTypeSelect.addActionListener(this);
 
-        panel.setSize(200, 200);
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
+        JLabel nameLabel = new JLabel();
+        nameLabel.setText("Name: ");
+        JTextField nameField = new JTextField();
+        namePanel.add(nameLabel);
+        namePanel.add(nameField);
+        namePanel.setPreferredSize(new Dimension(500,100));
+
+        JPanel notesPanel = new JPanel();
+        notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.X_AXIS));
+        JLabel notesLabel = new JLabel();
+        notesLabel.setText("Notes: ");
+        JTextField notesField = new JTextField();
+        notesPanel.add(notesLabel);
+        notesPanel.add(notesField);
+        notesPanel.setPreferredSize(new Dimension(500,100));
+
+        panel.add(consumableTypeSelect);
+        panel.add(namePanel);
+        panel.add(notesPanel);
+
+        getContentPane().setSize(500,500);
         getContentPane().add(panel);
         pack();
     }
