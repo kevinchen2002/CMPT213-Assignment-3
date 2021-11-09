@@ -29,6 +29,8 @@ public class ConsumableManager {
     private static ArrayList<Consumable> consumableList = new ArrayList<>();
     private static final String filename = "data.json";
 
+    //TODO: add a singleton
+
     public void addConsumable(Consumable consumable) {
         consumableList.add(consumable);
         Collections.sort(consumableList);

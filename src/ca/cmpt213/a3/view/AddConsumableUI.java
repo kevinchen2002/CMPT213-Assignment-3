@@ -7,9 +7,12 @@ import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -45,6 +48,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         nameLabel.setText("Name: ");
         nameLabel.setPreferredSize(new Dimension(50, 25));
         JTextField nameField = new JTextField();
+        nameField.addActionListener(this);
         namePanel.add(nameLabel);
         namePanel.add(nameField);
         namePanel.setPreferredSize(new Dimension(300,25));
