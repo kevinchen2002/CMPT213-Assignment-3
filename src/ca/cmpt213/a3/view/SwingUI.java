@@ -104,19 +104,19 @@ public class SwingUI implements ActionListener {
     }
 
     private void viewAllConsumables() {
-        displayPane.setText(consumableManager.getAllConsumablesString());
+        displayPane.setText("ALL CONSUMABLES\n\n" + consumableManager.getAllConsumablesString());
     }
 
     private void viewExpired() {
-        displayPane.setText(consumableManager.getExpiredString());
+        displayPane.setText("EXPIRED CONSUMABLES\n\n" + consumableManager.getExpiredString());
     }
 
     private void viewNotExpired() {
-        displayPane.setText(consumableManager.getNotExpiredString());
+        displayPane.setText("CONSUMABLES THAT ARE NOT YET EXPIRED\n\n" + consumableManager.getNotExpiredString());
     }
 
     private void viewExpiringSevenDays() {
-        displayPane.setText(consumableManager.getExpiringSevenDaysString());
+        displayPane.setText("CONSUMABLES EXPIRING WITHIN SEVEN DAYS\n\n" + consumableManager.getExpiringSevenDaysString());
     }
 
     private int getInteger(String message) {
@@ -246,17 +246,18 @@ public class SwingUI implements ActionListener {
                 price, weightOrVolume, expiry);
 
         consumableManager.addConsumable(newConsumable);
-        displayPane.setText("Item " + name + " has been added!");
+        JOptionPane.showMessageDialog(null, name + " has been added!");
     }
 
     private void removeConsumable() {
         int toDelete = getInteger("Which consumable would you like to delete?");
         if (toDelete < 1 || toDelete > consumableManager.getSize()) {
-            displayPane.setText("INVALID - please give a number from 1 to " + consumableManager.getSize() + ".");
+            JOptionPane.showMessageDialog(null, "Please give a number from 1 to "
+                    + consumableManager.getSize() + ".");
             return;
         }
         consumableManager.removeConsumable(toDelete-1);
-        displayPane.setText("Item #" + toDelete + " has been removed!");
+        JOptionPane.showMessageDialog(null, "Item #" + toDelete + " has been removed!");
     }
 
     @Override
