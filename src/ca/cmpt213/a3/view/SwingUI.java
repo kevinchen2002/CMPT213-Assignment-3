@@ -47,6 +47,9 @@ public class SwingUI implements ActionListener {
         applicationFrame.setSize(700, 700);
         applicationFrame.pack();
         applicationFrame.setVisible(true);
+
+        AddConsumableUI dummy = new AddConsumableUI(applicationFrame);
+        Consumable newDummy = dummy.run();
     }
 
     private void setupTopButtons() {
