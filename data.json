@@ -1,1 +1,1 @@
-[{"weight":0.0,"name":"New","notes":"New","price":0.0,"expDate":"2000-01-01T23:59","daysUntilExp":-7981,"isExpired":true,"type":"food"},{"weight":1.0,"name":"Food","notes":"Notes","price":1.0,"expDate":"2001-01-01T23:59","daysUntilExp":-7615,"isExpired":true,"type":"food"}]
+[{"weight":100.0,"name":"Orange","notes":"yum","price":2.49,"expDate":"2021-11-09T23:59","daysUntilExp":1,"isExpired":false,"type":"food"}]

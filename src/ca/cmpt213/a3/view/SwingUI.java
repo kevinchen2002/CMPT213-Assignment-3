@@ -20,6 +20,7 @@ public class SwingUI implements ActionListener {
     JScrollPane consumableListView;
 
     ConsumableManager consumableManager = new ConsumableManager();
+    private int DISPLAY_OPTION = 0;
 
     public void displayMenu() {
         consumableManager.loadFile();
@@ -40,6 +41,8 @@ public class SwingUI implements ActionListener {
         setupTopButtons();
         setupListView();
         setupAddRemoveButton();
+
+        updateView();
 
         applicationFrame.setSize(700, 700);
         applicationFrame.pack();
@@ -72,6 +75,7 @@ public class SwingUI implements ActionListener {
 
     private void setupListView() {
         displayPane = new JTextPane();
+        displayPane.setEditable(false);
 
         consumableListView = new JScrollPane(displayPane);
         consumableListView.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -117,6 +121,18 @@ public class SwingUI implements ActionListener {
 
     private void viewExpiringSevenDays() {
         displayPane.setText("CONSUMABLES EXPIRING WITHIN SEVEN DAYS\n\n" + consumableManager.getExpiringSevenDaysString());
+    }
+
+    private void updateView() {
+        if (DISPLAY_OPTION == 0) {
+            viewAllConsumables();
+        } else if (DISPLAY_OPTION == 1) {
+            viewExpired();
+        } else if (DISPLAY_OPTION == 2) {
+            viewNotExpired();
+        } else if (DISPLAY_OPTION == 3) {
+            viewExpiringSevenDays();
+        }
     }
 
     private int getInteger(String message) {
@@ -246,6 +262,7 @@ public class SwingUI implements ActionListener {
                 price, weightOrVolume, expiry);
 
         consumableManager.addConsumable(newConsumable);
+        updateView();
         JOptionPane.showMessageDialog(null, name + " has been added!");
     }
 
@@ -257,19 +274,24 @@ public class SwingUI implements ActionListener {
             return;
         }
         consumableManager.removeConsumable(toDelete-1);
+        updateView();
         JOptionPane.showMessageDialog(null, "Item #" + toDelete + " has been removed!");
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if (Objects.equals(e.getActionCommand(), "All")) {
-            viewAllConsumables();
+            DISPLAY_OPTION = 0;
+            updateView();
         } else if (Objects.equals(e.getActionCommand(), "Expired")) {
-            viewExpired();
+            DISPLAY_OPTION = 1;
+            updateView();
         } else if (Objects.equals(e.getActionCommand(), "Not Expired")) {
-            viewNotExpired();
+            DISPLAY_OPTION = 2;
+            updateView();
         } else if (Objects.equals(e.getActionCommand(), "Expiring in 7 Days")) {
-            viewExpiringSevenDays();
+            DISPLAY_OPTION = 3;
+            updateView();
         } else if (Objects.equals(e.getActionCommand(), "Add")) {
             addConsumable();
         } else if (Objects.equals(e.getActionCommand(), "Remove")) {
