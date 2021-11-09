@@ -11,13 +11,18 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
+import java.util.Objects;
+
+//TODO: FIX FORMATTING
+//TODO: MAKE THE OK BUTTON RETURN SOMETHING
 
 public class AddConsumableUI extends JDialog implements ActionListener, DateChangeListener {
     private boolean isFood = true;
     private LocalDateTime expDate;
+    private final DatePicker datePicker;
 
-    private JComboBox<String> consumableTypeSelect;
-    private JLabel weightOrVolumeLabel;
+    private final JComboBox<String> consumableTypeSelect;
+    private final JLabel weightOrVolumeLabel;
     private final String[] typeOptions = {"Food", "Drink"};
 
     public AddConsumableUI(Frame parent) {
@@ -29,8 +34,8 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateChan
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        consumableTypeSelect = new JComboBox<String>(typeOptions);
-        consumableTypeSelect.setSelectedIndex(-1);
+        consumableTypeSelect = new JComboBox<>(typeOptions);
+        //consumableTypeSelect.setSelectedIndex(-1);
         consumableTypeSelect.setPreferredSize(new Dimension(500, 30));
         consumableTypeSelect.addActionListener(this);
 
@@ -64,7 +69,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateChan
         JPanel weightOrVolumePanel = new JPanel();
         weightOrVolumePanel.setLayout(new BoxLayout(weightOrVolumePanel, BoxLayout.X_AXIS));
         weightOrVolumeLabel = new JLabel();
-        weightOrVolumeLabel.setText("       ");
+        weightOrVolumeLabel.setText("Weight: ");
         JTextField weightOrVolumeField = new JTextField();
         weightOrVolumePanel.add(weightOrVolumeLabel);
         weightOrVolumePanel.add(weightOrVolumeField);
@@ -74,13 +79,20 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateChan
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
         JLabel dateLabel = new JLabel();
         dateLabel.setText("Date: ");
-        DatePicker datePicker = new DatePicker();
+        datePicker = new DatePicker();
         datePicker.addDateChangeListener(this::dateChanged);
         datePanel.add(dateLabel);
         datePanel.add(datePicker);
-        datePanel.setPreferredSize(new Dimension (500, 100));
+        datePanel.setPreferredSize(new Dimension (500, 30));
 
-        expDate = datePicker.getDate().atTime(23, 59);
+        JPanel btnPanel = new JPanel();
+        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+        JButton okBtn = new JButton("OK");
+        JButton cancelBtn = new JButton("Cancel");
+        okBtn.addActionListener(this);
+        cancelBtn.addActionListener(this);
+        btnPanel.add(okBtn);
+        btnPanel.add(cancelBtn);
 
         panel.add(consumableTypeSelect);
         panel.add(namePanel);
@@ -88,6 +100,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateChan
         panel.add(pricePanel);
         panel.add(weightOrVolumePanel);
         panel.add(datePanel);
+        panel.add(btnPanel);
 
         getContentPane().setSize(500,500);
         getContentPane().add(panel);
@@ -96,22 +109,28 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateChan
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (consumableTypeSelect.getSelectedItem().equals("Food")) {
+        if (Objects.equals(consumableTypeSelect.getSelectedItem(), "Food")) {
             weightOrVolumeLabel.setText("Weight: ");
             isFood = true;
         } else if (consumableTypeSelect.getSelectedItem().equals("Drink")) {
             weightOrVolumeLabel.setText("Volume:");
             isFood = false;
         }
+
+        if (Objects.equals(e.getActionCommand(), "OK")) {
+            //do run or some other Consumable return
+        } else if (Objects.equals(e.getActionCommand(), "Cancel")) {
+            this.dispose();
+        }
     }
 
     public Consumable run() {
         this.setVisible(true);
-        return ConsumableFactory.getInstance(true, " ", "", 1,1, LocalDateTime.now());
+        return ConsumableFactory.getInstance(isFood, " ", "", 1,1, LocalDateTime.now());
     }
 
     @Override
     public void dateChanged(DateChangeEvent event) {
-
+        expDate = datePicker.getDate().atTime(23, 59);
     }
 }
