@@ -1,6 +1,7 @@
 package ca.cmpt213.a3.view;
 
 import ca.cmpt213.a3.control.ConsumableFactory;
+import ca.cmpt213.a3.control.ConsumableManager;
 import ca.cmpt213.a3.model.Consumable;
 import com.github.lgooddatepicker.components.DateTimePicker;
 import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
@@ -23,10 +24,16 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
     private boolean isFood = true;
     private LocalDateTime expDate;
     private final DateTimePicker dateTimePicker;
+    private final ConsumableManager consumableManager = ConsumableManager.getInstance();
 
     private final JComboBox<String> consumableTypeSelect;
     private final JLabel weightOrVolumeLabel;
     private final String[] typeOptions = {"Food", "Drink"};
+
+    JTextField nameField;
+    JTextField notesField;
+    JTextField priceField;
+    JTextField weightOrVolumeField;
 
     public AddConsumableUI(Frame parent) {
         super(parent, "Add", true);
@@ -47,7 +54,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         JLabel nameLabel = new JLabel();
         nameLabel.setText("Name: ");
         nameLabel.setPreferredSize(new Dimension(50, 25));
-        JTextField nameField = new JTextField();
+        nameField = new JTextField();
         nameField.addActionListener(this);
         namePanel.add(nameLabel);
         namePanel.add(nameField);
@@ -58,7 +65,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         JLabel notesLabel = new JLabel();
         notesLabel.setText("Notes: ");
         notesLabel.setPreferredSize(new Dimension(50, 25));
-        JTextField notesField = new JTextField();
+        notesField = new JTextField();
         notesPanel.add(notesLabel);
         notesPanel.add(notesField);
         notesPanel.setPreferredSize(new Dimension(300,25));
@@ -68,7 +75,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         JLabel priceLabel = new JLabel();
         priceLabel.setText("Price: ");
         priceLabel.setPreferredSize(new Dimension(50, 25));
-        JTextField priceField = new JTextField();
+        priceField = new JTextField();
         pricePanel.add(priceLabel);
         pricePanel.add(priceField);
         pricePanel.setPreferredSize(new Dimension(300,25));
@@ -78,7 +85,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         weightOrVolumeLabel = new JLabel();
         weightOrVolumeLabel.setText("Weight: ");
         weightOrVolumeLabel.setPreferredSize(new Dimension(50, 25));
-        JTextField weightOrVolumeField = new JTextField();
+        weightOrVolumeField = new JTextField();
         weightOrVolumePanel.add(weightOrVolumeLabel);
         weightOrVolumePanel.add(weightOrVolumeField);
         weightOrVolumePanel.setPreferredSize(new Dimension(300,25));
@@ -114,6 +121,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         getContentPane().setSize(500,500);
         getContentPane().add(panel);
         pack();
+        this.setVisible(true);
     }
 
     @Override
@@ -127,15 +135,80 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
         }
 
         if (Objects.equals(e.getActionCommand(), "OK")) {
-            //do run or some other Consumable return
+            addConsumable();
         } else if (Objects.equals(e.getActionCommand(), "Cancel")) {
             this.dispose();
         }
     }
 
-    public Consumable run() {
-        this.setVisible(true);
-        return ConsumableFactory.getInstance(isFood, " ", "", 1,1, LocalDateTime.now());
+    private void addConsumable() {
+        try {
+            String name = parseName();
+            String notes = parseNotes();
+            double price = parsePrice();
+            double weightOrVolume = parseWeightOrVolume();
+
+            if (name.equals("")) {
+                JOptionPane.showMessageDialog(this, "Error: name cannot be empty");
+                return;
+            }
+            if (price < 0) {
+                JOptionPane.showMessageDialog(this, "Error: price cannot be less than 0");
+                return;
+            }
+            if (weightOrVolume < 0) {
+                if (isFood) {
+                    JOptionPane.showMessageDialog(this, "Error: weight cannot be less than 0");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error: volume cannot be less than 0");
+                }
+                return;
+            }
+            Consumable newConsumable = ConsumableFactory.getInstance(isFood, name, notes, price, weightOrVolume, expDate);
+            consumableManager.addConsumable(newConsumable);
+            dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error: invalid input");
+            return;
+        }
+    }
+
+    private String parseName() {
+        if (nameField.getText() == null) {
+            return "";
+        }
+        return nameField.getText();
+    }
+
+    private String parseNotes() {
+        if (notesField.getText() == null) {
+            return "";
+        }
+        return notesField.getText();
+    }
+
+    private double parsePrice() {
+        if (priceField.getText() == null) {
+            return -1;
+        }
+        try {
+            return Double.parseDouble(priceField.getText());
+        } catch (NumberFormatException nfe) {
+            //do nothing
+        }
+        return -1;
+    }
+
+    private double parseWeightOrVolume() {
+        if (weightOrVolumeField.getText() == null) {
+            return -1;
+        }
+        try {
+            return Double.parseDouble(weightOrVolumeField.getText());
+        } catch (NumberFormatException nfe) {
+            //do nothing
+        }
+        return -1;
     }
 
     @Override

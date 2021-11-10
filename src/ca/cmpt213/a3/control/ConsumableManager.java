@@ -29,7 +29,14 @@ public class ConsumableManager {
     private static ArrayList<Consumable> consumableList = new ArrayList<>();
     private static final String filename = "data.json";
 
-    //TODO: add a singleton
+    private static ConsumableManager instance;
+
+    public static ConsumableManager getInstance() {
+        if (instance == null) {
+            instance = new ConsumableManager();
+        }
+        return instance;
+    }
 
     public void addConsumable(Consumable consumable) {
         consumableList.add(consumable);
