@@ -14,6 +14,7 @@ public class SwingUI implements ActionListener {
     JFrame applicationFrame;
     JTextPane displayPane;
     JScrollPane consumableListView;
+    JLabel categoryLabel;
 
     private final ConsumableManager consumableManager = ConsumableManager.getInstance();
     private int DISPLAY_OPTION = 0;
@@ -35,6 +36,7 @@ public class SwingUI implements ActionListener {
         });
 
         setupTopButtons();
+        setupCategoryLabel();
         setupListView();
         setupAddRemoveButton();
 
@@ -64,9 +66,16 @@ public class SwingUI implements ActionListener {
         listTabsPanel.add(showNotExpiredButton);
         listTabsPanel.add(showExpiringSevenButton);
 
-        listTabsPanel.setSize(800, 100);
-        listTabsPanel.setPreferredSize(new Dimension(800, 100));
+        listTabsPanel.setPreferredSize(new Dimension(800, 90));
         addPanel(listTabsPanel, applicationFrame);
+    }
+
+    private void setupCategoryLabel() {
+        categoryLabel = new JLabel("All Consumables");
+        JPanel categoryPanel = new JPanel();
+        categoryPanel.add(categoryLabel);
+        categoryPanel.setPreferredSize(new Dimension(800, 20));
+        addPanel(categoryPanel, applicationFrame);
     }
 
     private void setupListView() {
@@ -75,7 +84,6 @@ public class SwingUI implements ActionListener {
 
         consumableListView = new JScrollPane(displayPane);
         consumableListView.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        consumableListView.setSize(800, 500);
         consumableListView.setPreferredSize(new Dimension(800, 500));
         consumableListView.setAlignmentX(Component.CENTER_ALIGNMENT);
         applicationFrame.add(consumableListView);
@@ -93,8 +101,7 @@ public class SwingUI implements ActionListener {
 
         addRemovePanel.add(addNewButton);
         addRemovePanel.add(removeButton);
-        addRemovePanel.setSize(800, 100);
-        addRemovePanel.setPreferredSize(new Dimension(800, 100));
+        addRemovePanel.setPreferredSize(new Dimension(800, 90));
         addPanel(addRemovePanel, applicationFrame);
     }
 
@@ -104,30 +111,34 @@ public class SwingUI implements ActionListener {
     }
 
     private void viewAllConsumables() {
-        displayPane.setText("ALL CONSUMABLES\n\n" + consumableManager.getAllConsumablesString());
+        displayPane.setText(consumableManager.getAllConsumablesString());
     }
 
     private void viewExpired() {
-        displayPane.setText("EXPIRED CONSUMABLES\n\n" + consumableManager.getExpiredString());
+        displayPane.setText(consumableManager.getExpiredString());
     }
 
     private void viewNotExpired() {
-        displayPane.setText("CONSUMABLES THAT ARE NOT YET EXPIRED\n\n" + consumableManager.getNotExpiredString());
+        displayPane.setText(consumableManager.getNotExpiredString());
     }
 
     private void viewExpiringSevenDays() {
-        displayPane.setText("CONSUMABLES EXPIRING WITHIN SEVEN DAYS\n\n" + consumableManager.getExpiringSevenDaysString());
+        displayPane.setText(consumableManager.getExpiringSevenDaysString());
     }
 
     private void updateView() {
         if (DISPLAY_OPTION == 0) {
             viewAllConsumables();
+            categoryLabel.setText("All Consumables");
         } else if (DISPLAY_OPTION == 1) {
             viewExpired();
+            categoryLabel.setText("Expired Consumables");
         } else if (DISPLAY_OPTION == 2) {
             viewNotExpired();
+            categoryLabel.setText("Consumables which are not Expired");
         } else if (DISPLAY_OPTION == 3) {
             viewExpiringSevenDays();
+            categoryLabel.setText("Consumables Expiring within Seven Days");
         }
     }
 

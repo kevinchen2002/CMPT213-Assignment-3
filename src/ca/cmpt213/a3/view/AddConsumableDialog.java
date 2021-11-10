@@ -14,17 +14,14 @@ import java.awt.event.ActionListener;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-//TODO: FIX FORMATTING
-//TODO: MAKE THE OK BUTTON RETURN SOMETHING
-
 public class AddConsumableDialog extends JDialog implements ActionListener, DateTimeChangeListener {
     private boolean isFood = true;
     private LocalDateTime expDate;
-    private final DateTimePicker dateTimePicker;
+    private DateTimePicker dateTimePicker;
     private final ConsumableManager consumableManager = ConsumableManager.getInstance();
 
     private final JComboBox<String> consumableTypeSelect;
-    private final JLabel weightOrVolumeLabel;
+    private JLabel weightOrVolumeLabel;
     private final String[] typeOptions = {"Food", "Drink"};
 
     JTextField nameField;
@@ -42,70 +39,15 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         consumableTypeSelect = new JComboBox<>(typeOptions);
-        //consumableTypeSelect.setSelectedIndex(-1);
         consumableTypeSelect.setPreferredSize(new Dimension(300, 25));
         consumableTypeSelect.addActionListener(this);
 
-        JPanel namePanel = new JPanel();
-        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
-        JLabel nameLabel = new JLabel();
-        nameLabel.setText("Name: ");
-        nameLabel.setPreferredSize(new Dimension(50, 25));
-        nameField = new JTextField();
-        nameField.addActionListener(this);
-        namePanel.add(nameLabel);
-        namePanel.add(nameField);
-        namePanel.setPreferredSize(new Dimension(300,25));
-
-        JPanel notesPanel = new JPanel();
-        notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.X_AXIS));
-        JLabel notesLabel = new JLabel();
-        notesLabel.setText("Notes: ");
-        notesLabel.setPreferredSize(new Dimension(50, 25));
-        notesField = new JTextField();
-        notesPanel.add(notesLabel);
-        notesPanel.add(notesField);
-        notesPanel.setPreferredSize(new Dimension(300,25));
-
-        JPanel pricePanel = new JPanel();
-        pricePanel.setLayout(new BoxLayout(pricePanel, BoxLayout.X_AXIS));
-        JLabel priceLabel = new JLabel();
-        priceLabel.setText("Price: ");
-        priceLabel.setPreferredSize(new Dimension(50, 25));
-        priceField = new JTextField();
-        pricePanel.add(priceLabel);
-        pricePanel.add(priceField);
-        pricePanel.setPreferredSize(new Dimension(300,25));
-
-        JPanel weightOrVolumePanel = new JPanel();
-        weightOrVolumePanel.setLayout(new BoxLayout(weightOrVolumePanel, BoxLayout.X_AXIS));
-        weightOrVolumeLabel = new JLabel();
-        weightOrVolumeLabel.setText("Weight: ");
-        weightOrVolumeLabel.setPreferredSize(new Dimension(50, 25));
-        weightOrVolumeField = new JTextField();
-        weightOrVolumePanel.add(weightOrVolumeLabel);
-        weightOrVolumePanel.add(weightOrVolumeField);
-        weightOrVolumePanel.setPreferredSize(new Dimension(300,25));
-
-        JPanel datePanel = new JPanel();
-        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
-        JLabel dateLabel = new JLabel();
-        dateLabel.setText("Date: ");
-        dateLabel.setPreferredSize(new Dimension(50, 25));
-        dateTimePicker = new DateTimePicker();
-        dateTimePicker.addDateTimeChangeListener(this);
-        datePanel.add(dateLabel);
-        datePanel.add(dateTimePicker);
-        datePanel.setPreferredSize(new Dimension (300, 25));
-
-        JPanel btnPanel = new JPanel();
-        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
-        JButton okBtn = new JButton("OK");
-        JButton cancelBtn = new JButton("Cancel");
-        okBtn.addActionListener(this);
-        cancelBtn.addActionListener(this);
-        btnPanel.add(okBtn);
-        btnPanel.add(cancelBtn);
+        JPanel namePanel = getNamePanel();
+        JPanel notesPanel = getNotesPanel();
+        JPanel pricePanel = getPricePanel();
+        JPanel weightOrVolumePanel = getWeightOrVolumePanel();
+        JPanel datePanel = getDatePanel();
+        JPanel btnPanel = getBtnPanel();
 
         panel.add(consumableTypeSelect);
         panel.add(namePanel);
@@ -121,21 +63,83 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         this.setVisible(true);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (Objects.equals(consumableTypeSelect.getSelectedItem(), "Food")) {
-            weightOrVolumeLabel.setText("Weight: ");
-            isFood = true;
-        } else if (Objects.equals(consumableTypeSelect.getSelectedItem(), "Drink")) {
-            weightOrVolumeLabel.setText("Volume:");
-            isFood = false;
-        }
+    private JPanel getNamePanel() {
+        JPanel namePanel = new JPanel();
+        namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
+        JLabel nameLabel = new JLabel();
+        nameLabel.setText("Name: ");
+        nameLabel.setPreferredSize(new Dimension(50, 25));
+        nameField = new JTextField();
+        nameField.addActionListener(this);
+        namePanel.add(nameLabel);
+        namePanel.add(nameField);
+        namePanel.setPreferredSize(new Dimension(300,25));
+        return namePanel;
+    }
 
-        if (Objects.equals(e.getActionCommand(), "OK")) {
-            addConsumable();
-        } else if (Objects.equals(e.getActionCommand(), "Cancel")) {
-            this.dispose();
-        }
+    private JPanel getNotesPanel() {
+        JPanel notesPanel = new JPanel();
+        notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.X_AXIS));
+        JLabel notesLabel = new JLabel();
+        notesLabel.setText("Notes: ");
+        notesLabel.setPreferredSize(new Dimension(50, 25));
+        notesField = new JTextField();
+        notesPanel.add(notesLabel);
+        notesPanel.add(notesField);
+        notesPanel.setPreferredSize(new Dimension(300,25));
+        return notesPanel;
+    }
+
+    private JPanel getPricePanel() {
+        JPanel pricePanel = new JPanel();
+        pricePanel.setLayout(new BoxLayout(pricePanel, BoxLayout.X_AXIS));
+        JLabel priceLabel = new JLabel();
+        priceLabel.setText("Price: ");
+        priceLabel.setPreferredSize(new Dimension(50, 25));
+        priceField = new JTextField();
+        pricePanel.add(priceLabel);
+        pricePanel.add(priceField);
+        pricePanel.setPreferredSize(new Dimension(300,25));
+        return pricePanel;
+    }
+
+    private JPanel getWeightOrVolumePanel() {
+        JPanel weightOrVolumePanel = new JPanel();
+        weightOrVolumePanel.setLayout(new BoxLayout(weightOrVolumePanel, BoxLayout.X_AXIS));
+        weightOrVolumeLabel = new JLabel();
+        weightOrVolumeLabel.setText("Weight: ");
+        weightOrVolumeLabel.setPreferredSize(new Dimension(50, 25));
+        weightOrVolumeField = new JTextField();
+        weightOrVolumePanel.add(weightOrVolumeLabel);
+        weightOrVolumePanel.add(weightOrVolumeField);
+        weightOrVolumePanel.setPreferredSize(new Dimension(300,25));
+        return weightOrVolumePanel;
+    }
+
+    private JPanel getDatePanel() {
+        JPanel datePanel = new JPanel();
+        datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
+        JLabel dateLabel = new JLabel();
+        dateLabel.setText("Date: ");
+        dateLabel.setPreferredSize(new Dimension(50, 25));
+        dateTimePicker = new DateTimePicker();
+        dateTimePicker.addDateTimeChangeListener(this);
+        datePanel.add(dateLabel);
+        datePanel.add(dateTimePicker);
+        datePanel.setPreferredSize(new Dimension (300, 25));
+        return datePanel;
+    }
+
+    private JPanel getBtnPanel() {
+        JPanel btnPanel = new JPanel();
+        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+        JButton okBtn = new JButton("OK");
+        JButton cancelBtn = new JButton("Cancel");
+        okBtn.addActionListener(this);
+        cancelBtn.addActionListener(this);
+        btnPanel.add(okBtn);
+        btnPanel.add(cancelBtn);
+        return btnPanel;
     }
 
     private void addConsumable() {
@@ -166,7 +170,6 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
             dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error: invalid input");
-            return;
         }
     }
 
@@ -206,6 +209,23 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
             //do nothing
         }
         return -1;
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (Objects.equals(consumableTypeSelect.getSelectedItem(), "Food")) {
+            weightOrVolumeLabel.setText("Weight: ");
+            isFood = true;
+        } else if (Objects.equals(consumableTypeSelect.getSelectedItem(), "Drink")) {
+            weightOrVolumeLabel.setText("Volume:");
+            isFood = false;
+        }
+
+        if (Objects.equals(e.getActionCommand(), "OK")) {
+            addConsumable();
+        } else if (Objects.equals(e.getActionCommand(), "Cancel")) {
+            this.dispose();
+        }
     }
 
     @Override
