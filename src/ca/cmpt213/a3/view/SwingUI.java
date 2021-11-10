@@ -190,7 +190,10 @@ public class SwingUI implements ActionListener {
      */
     private int getDeletionIndex() {
         try {
-            String input = JOptionPane.showInputDialog("Which consumable would you like to delete?");
+            String input = JOptionPane.showInputDialog(applicationFrame,
+                    "Which consumable would you like to delete?",
+                    "Enter an index",
+                    JOptionPane.QUESTION_MESSAGE);
             if (input == null) {
                 return -1;
             }
@@ -213,15 +216,24 @@ public class SwingUI implements ActionListener {
      * Validates the index given by the user, then removed the associated Consumable from the list
      */
     private void removeConsumable() {
+        if (consumableManager.getSize() == 0) {
+            JOptionPane.showMessageDialog(applicationFrame, "The list is empty.");
+            return;
+        }
         int toDelete = getDeletionIndex();
         if (toDelete < 1 || toDelete > consumableManager.getSize()) {
-            JOptionPane.showMessageDialog(null, "Please give a number from 1 to "
-                    + consumableManager.getSize() + ".");
+            JOptionPane.showMessageDialog(applicationFrame,
+                    "Please give a number from 1 to " + consumableManager.getSize() + ".",
+                    "Information",
+                    JOptionPane.WARNING_MESSAGE);
             return;
         }
         consumableManager.removeConsumable(toDelete-1);
         updateView();
-        JOptionPane.showMessageDialog(null, "Item #" + toDelete + " has been removed!");
+        JOptionPane.showMessageDialog(applicationFrame,
+                "Item #" + toDelete + " has been removed!",
+                "Information",
+                JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**

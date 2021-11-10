@@ -1,1 +1,1 @@
-[{"weight":1.0,"name":"New","notes":"new","price":1.0,"expDate":"2021-11-03T00:00","daysUntilExp":-7,"isExpired":true,"type":"food"},{"volume":4.0,"name":"Drink","notes":"Drink","price":3.0,"expDate":"2021-11-05T01:00","daysUntilExp":-5,"isExpired":true,"type":"drink"},{"weight":0.0,"name":"Food","notes":"Food","price":0.0,"expDate":"2021-11-13T02:00","daysUntilExp":2,"isExpired":false,"type":"food"}]
+[{"weight":5.0,"name":"a","notes":"","price":4.0,"expDate":"2021-11-19T00:00","daysUntilExp":8,"isExpired":false,"type":"food"}]

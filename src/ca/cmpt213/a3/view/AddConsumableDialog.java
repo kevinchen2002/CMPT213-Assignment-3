@@ -82,7 +82,7 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         namePanel.setLayout(new BoxLayout(namePanel, BoxLayout.X_AXIS));
         JLabel nameLabel = new JLabel();
         nameLabel.setText("Name: ");
-        nameLabel.setPreferredSize(new Dimension(50, 25));
+        nameLabel.setPreferredSize(new Dimension(48, 25));
         nameField = new JTextField();
         nameField.addActionListener(this);
         namePanel.add(nameLabel);
@@ -100,7 +100,7 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         notesPanel.setLayout(new BoxLayout(notesPanel, BoxLayout.X_AXIS));
         JLabel notesLabel = new JLabel();
         notesLabel.setText("Notes: ");
-        notesLabel.setPreferredSize(new Dimension(50, 25));
+        notesLabel.setPreferredSize(new Dimension(48, 25));
         notesField = new JTextField();
         notesPanel.add(notesLabel);
         notesPanel.add(notesField);
@@ -117,7 +117,7 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         pricePanel.setLayout(new BoxLayout(pricePanel, BoxLayout.X_AXIS));
         JLabel priceLabel = new JLabel();
         priceLabel.setText("Price: ");
-        priceLabel.setPreferredSize(new Dimension(50, 25));
+        priceLabel.setPreferredSize(new Dimension(48, 25));
         priceField = new JTextField();
         pricePanel.add(priceLabel);
         pricePanel.add(priceField);
@@ -134,7 +134,7 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         weightOrVolumePanel.setLayout(new BoxLayout(weightOrVolumePanel, BoxLayout.X_AXIS));
         weightOrVolumeLabel = new JLabel();
         weightOrVolumeLabel.setText("Weight: ");
-        weightOrVolumeLabel.setPreferredSize(new Dimension(50, 25));
+        weightOrVolumeLabel.setPreferredSize(new Dimension(48, 25));
         weightOrVolumeField = new JTextField();
         weightOrVolumePanel.add(weightOrVolumeLabel);
         weightOrVolumePanel.add(weightOrVolumeField);
@@ -151,7 +151,7 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
         datePanel.setLayout(new BoxLayout(datePanel, BoxLayout.X_AXIS));
         JLabel dateLabel = new JLabel();
         dateLabel.setText("Date: ");
-        dateLabel.setPreferredSize(new Dimension(50, 25));
+        dateLabel.setPreferredSize(new Dimension(48, 25));
         dateTimePicker = new DateTimePicker();
         dateTimePicker.addDateTimeChangeListener(this);
         datePanel.add(dateLabel);
@@ -189,18 +189,30 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
             double weightOrVolume = parseWeightOrVolume();
 
             if (name.equals("")) {
-                JOptionPane.showMessageDialog(this, "Error: name cannot be empty");
+                JOptionPane.showMessageDialog(this,
+                        "Error: name cannot be empty",
+                        "Invalid input",
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (price < 0) {
-                JOptionPane.showMessageDialog(this, "Error: price cannot be less than 0");
+                JOptionPane.showMessageDialog(this,
+                        "Error: price cannot be less than 0",
+                        "Invalid input",
+                        JOptionPane.WARNING_MESSAGE);
                 return;
             }
             if (weightOrVolume < 0) {
                 if (isFood) {
-                    JOptionPane.showMessageDialog(this, "Error: weight cannot be less than 0");
+                    JOptionPane.showMessageDialog(this,
+                            "Error: weight cannot be less than 0",
+                            "Invalid input",
+                            JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Error: volume cannot be less than 0");
+                    JOptionPane.showMessageDialog(this,
+                            "Error: volume cannot be less than 0",
+                            "Invalid input",
+                            JOptionPane.WARNING_MESSAGE);
                 }
                 return;
             }
@@ -208,7 +220,10 @@ public class AddConsumableDialog extends JDialog implements ActionListener, Date
             consumableManager.addConsumable(newConsumable);
             dispose();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error: invalid input");
+            JOptionPane.showMessageDialog(this,
+                    "Error: invalid input",
+                    "Invalid input",
+                    JOptionPane.WARNING_MESSAGE);
         }
     }
 
