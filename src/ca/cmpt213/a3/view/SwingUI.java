@@ -10,6 +10,12 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Objects;
 
+/**
+ * The main UI class
+ * The user selects which of 4 lists to view with the top buttons
+ * Display of one of 4 lists takes place on the central pane.
+ * The user can add or remove Consumables with the bottom buttons.
+ */
 public class SwingUI implements ActionListener {
     JFrame applicationFrame;
     JTextPane displayPane;
@@ -19,6 +25,9 @@ public class SwingUI implements ActionListener {
     private final ConsumableManager consumableManager = ConsumableManager.getInstance();
     private int DISPLAY_OPTION = 0;
 
+    /**
+     * Sets up and displays the main menu
+     */
     public void displayMenu() {
         consumableManager.loadFile();
 
@@ -47,6 +56,9 @@ public class SwingUI implements ActionListener {
         applicationFrame.setVisible(true);
     }
 
+    /**
+     * Sets up the four buttons on the top
+     */
     private void setupTopButtons() {
         JButton showAllButton = new JButton("All");
         JButton showExpiredButton = new JButton("Expired");
@@ -70,6 +82,9 @@ public class SwingUI implements ActionListener {
         addPanel(listTabsPanel, applicationFrame);
     }
 
+    /**
+     * Sets up the category label above the main pane
+     */
     private void setupCategoryLabel() {
         categoryLabel = new JLabel("All Consumables");
         JPanel categoryPanel = new JPanel();
@@ -78,6 +93,9 @@ public class SwingUI implements ActionListener {
         addPanel(categoryPanel, applicationFrame);
     }
 
+    /**
+     * Sets up the central pane containing Consumable objects
+     */
     private void setupListView() {
         displayPane = new JTextPane();
         displayPane.setEditable(false);
@@ -89,6 +107,9 @@ public class SwingUI implements ActionListener {
         applicationFrame.add(consumableListView);
     }
 
+    /**
+     * Sets up the bottom buttons which are used to add and remove items
+     */
     private void setupAddRemoveButton() {
         JButton addNewButton = new JButton("Add");
         JButton removeButton = new JButton("Remove");
@@ -105,27 +126,48 @@ public class SwingUI implements ActionListener {
         addPanel(addRemovePanel, applicationFrame);
     }
 
+    /**
+     * Adds a panel to some container; in this case, the main application frame
+     * @param jpanel the panel to be added
+     * @param container the container which the panel is to be added to
+     */
     private static void addPanel(JPanel jpanel, Container container) {
         jpanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         container.add(jpanel);
     }
 
+    /**
+     * Displays all items on the central pane
+     */
     private void viewAllConsumables() {
         displayPane.setText(consumableManager.getAllConsumablesString());
     }
 
+    /**
+     * Displays all expired items on the central pane
+     */
     private void viewExpired() {
         displayPane.setText(consumableManager.getExpiredString());
     }
 
+    /**
+     * Displays all unexpired items on the central pane
+     */
     private void viewNotExpired() {
         displayPane.setText(consumableManager.getNotExpiredString());
     }
 
+    /**
+     * Displays all items expiring within seven days on the central pane
+     */
     private void viewExpiringSevenDays() {
         displayPane.setText(consumableManager.getExpiringSevenDaysString());
     }
 
+    /**
+     * Refreshes the central pane whenever necessary
+     * For example, when switching views or after adding an item
+     */
     private void updateView() {
         if (DISPLAY_OPTION == 0) {
             viewAllConsumables();
@@ -142,6 +184,10 @@ public class SwingUI implements ActionListener {
         }
     }
 
+    /**
+     * Prompts the user for the index of the item to delete
+     * @return the index given by the user
+     */
     private int getDeletionIndex() {
         try {
             String input = JOptionPane.showInputDialog("Which consumable would you like to delete?");
@@ -155,6 +201,17 @@ public class SwingUI implements ActionListener {
         return -1;
     }
 
+    /**
+     * Creates the dialog prompt which asks users to enter the relevant information.
+     */
+    private void addConsumable() {
+        new AddConsumableDialog(applicationFrame);
+        updateView();
+    }
+
+    /**
+     * Validates the index given by the user, then removed the associated Consumable from the list
+     */
     private void removeConsumable() {
         int toDelete = getDeletionIndex();
         if (toDelete < 1 || toDelete > consumableManager.getSize()) {
@@ -167,6 +224,11 @@ public class SwingUI implements ActionListener {
         JOptionPane.showMessageDialog(null, "Item #" + toDelete + " has been removed!");
     }
 
+    /**
+     * Defines behaviour when a button is pressed
+     * The first four buttons update the view, while the latter two modify the list
+     * @param e the action being received
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (Objects.equals(e.getActionCommand(), "All")) {
@@ -182,8 +244,7 @@ public class SwingUI implements ActionListener {
             DISPLAY_OPTION = 3;
             updateView();
         } else if (Objects.equals(e.getActionCommand(), "Add")) {
-            new AddConsumableDialog(applicationFrame);
-            updateView();
+            addConsumable();
         } else if (Objects.equals(e.getActionCommand(), "Remove")) {
             removeConsumable();
         }

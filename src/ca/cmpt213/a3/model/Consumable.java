@@ -15,13 +15,16 @@ public class Consumable implements Comparable<Consumable> {
     protected boolean isExpired;
     protected String type;
 
+    /**
+     * Constructor for Consumable which sets the type
+     * @param type the type (Food or Drink)
+     */
     public Consumable(String type) {
         this.type = type;
     }
 
     /**
      * Getter for expiration status
-     *
      * @return the expiration status
      */
     public boolean isExpired() {
@@ -30,17 +33,26 @@ public class Consumable implements Comparable<Consumable> {
 
     /**
      * Getter for the days until expiry
-     *
      * @return the days until expiry
      */
     public int getDaysUntilExp() {
         return daysUntilExp;
     }
 
+    /**
+     * Setter for the type of this Consumable
+     * This is necessary to serialize multiple times; RuntimeTypeAdapterFactory does not set this when deserializing
+     * @param type the type (Food or Drink)
+     */
     public void setType(String type) {
         this.type = type;
     }
 
+    /**
+     * Comparison method for Consumable items based on Expiry
+     * @param o the object in question to be compared
+     * @return whether the Expiry is before, after, or identical
+     */
     @Override
     public int compareTo(Consumable o) {
         if (this.expDate.isAfter(o.expDate)) {

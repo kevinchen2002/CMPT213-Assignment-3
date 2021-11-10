@@ -23,12 +23,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * ConsumableManager handles operations in regard to the Consumable list.
+ * It uses a Singleton to distribute the same instance across the main UI and the dialog.
+ */
 public class ConsumableManager {
     private static ArrayList<Consumable> consumableList = new ArrayList<>();
     private static final String filename = "data.json";
-
     private static ConsumableManager instance;
 
+    /**
+     * Method that returns the singular instance of ConsumableManager
+     * @return said instance
+     */
     public static ConsumableManager getInstance() {
         if (instance == null) {
             instance = new ConsumableManager();
@@ -36,19 +43,35 @@ public class ConsumableManager {
         return instance;
     }
 
+    /**
+     * Method to add a fully-formed consumable object to the list
+     * @param consumable the given consumable
+     */
     public void addConsumable(Consumable consumable) {
         consumableList.add(consumable);
         Collections.sort(consumableList);
     }
 
+    /**
+     * Returns the size of the underlying Consumable list
+     * @return the size as an integer
+     */
     public int getSize() {
         return consumableList.size();
     }
 
+    /**
+     * Removes the item at the given index
+     * @param index the index to be removed
+     */
     public void removeConsumable(int index) {
         consumableList.remove(index);
     }
 
+    /**
+     * Returns a string representing all Consumables
+     * @return said string
+     */
     public String getAllConsumablesString() {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
@@ -61,6 +84,10 @@ public class ConsumableManager {
         return bigString.toString();
     }
 
+    /**
+     * Returns a string representing all expired Consumables
+     * @return said string
+     */
     public String getExpiredString() {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
@@ -79,6 +106,10 @@ public class ConsumableManager {
         }
     }
 
+    /**
+     * Returns a string representing all unexpired Consumables
+     * @return said string
+     */
     public String getNotExpiredString() {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
@@ -97,6 +128,10 @@ public class ConsumableManager {
         }
     }
 
+    /**
+     * Returns a string representing all Consumables expiring within seven days
+     * @return said string
+     */
     public String getExpiringSevenDaysString() {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
