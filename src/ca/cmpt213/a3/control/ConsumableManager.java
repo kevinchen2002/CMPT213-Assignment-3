@@ -11,12 +11,10 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
@@ -51,35 +49,31 @@ public class ConsumableManager {
         consumableList.remove(index);
     }
 
-    public ArrayList<Consumable> getAllConsumables() {
-        return consumableList;
-    }
-
     public String getAllConsumablesString() {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
         }
-        String bigString = "";
+        StringBuilder bigString = new StringBuilder();
         for (int i = 0; i < consumableList.size(); i++) {
             String consumableString = "No. " + (i+1) + "\n" + consumableList.get(i);
-            bigString += consumableString + "\n\n";
+            bigString.append(consumableString).append("\n\n");
         }
-        return bigString;
+        return bigString.toString();
     }
 
     public String getExpiredString() {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
         }
-        String bigString = "";
+        StringBuilder bigString = new StringBuilder();
         for (int i = 0; i < consumableList.size(); i++) {
             if (consumableList.get(i).isExpired()) {
                 String consumableString = "No. " + (i + 1) + "\n" + consumableList.get(i);
-                bigString += consumableString + "\n\n";
+                bigString.append(consumableString).append("\n\n");
             }
         }
-        if (bigString != "") {
-            return bigString;
+        if (!bigString.toString().equals("")) {
+            return bigString.toString();
         } else {
             return "There are no expired consumable items!";
         }
@@ -89,15 +83,15 @@ public class ConsumableManager {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
         }
-        String bigString = "";
+        StringBuilder bigString = new StringBuilder();
         for (int i = 0; i < consumableList.size(); i++) {
             if (!consumableList.get(i).isExpired()) {
                 String consumableString = "No. " + (i + 1) + "\n" + consumableList.get(i);
-                bigString += consumableString + "\n\n";
+                bigString.append(consumableString).append("\n\n");
             }
         }
-        if (bigString != "") {
-            return bigString;
+        if (!bigString.toString().equals("")) {
+            return bigString.toString();
         } else {
             return "All consumable items are expired!";
         }
@@ -107,52 +101,18 @@ public class ConsumableManager {
         if (consumableList.isEmpty()) {
             return "There are no consumable items!";
         }
-        String bigString = "";
+        StringBuilder bigString = new StringBuilder();
         for (int i = 0; i < consumableList.size(); i++) {
             if (consumableList.get(i).getDaysUntilExp() <= 7 && !consumableList.get(i).isExpired()) {
                 String consumableString = "No. " + (i + 1) + "\n" + consumableList.get(i);
-                bigString += consumableString + "\n\n";
+                bigString.append(consumableString).append("\n\n");
             }
         }
-        if (bigString != "") {
-            return bigString;
+        if (!bigString.toString().equals("")) {
+            return bigString.toString();
         } else {
             return "There are no consumable items expiring within 7 days!";
         }
-    }
-
-    public ArrayList<Consumable> getExpiredList() {
-        ArrayList<Consumable> expiredConsumables = new ArrayList<>();
-        for (Consumable consumable : consumableList) {
-            if (consumable.isExpired()) {
-                expiredConsumables.add(consumable);
-            }
-        }
-        return expiredConsumables;
-    }
-
-    public ArrayList<Consumable> getNotExpiredList() {
-        ArrayList<Consumable> notExpiredConsumables = new ArrayList<>();
-        for (Consumable consumable : consumableList) {
-            if (!consumable.isExpired()) {
-                notExpiredConsumables.add(consumable);
-            }
-        }
-        return notExpiredConsumables;
-    }
-
-    public ArrayList<Consumable> getExpiringSevenDays() {
-        ArrayList<Consumable> expiringSevenDays = new ArrayList<>();
-        for (Consumable consumable : consumableList) {
-            if (consumable.getDaysUntilExp() <= 7 && !consumable.isExpired()) {
-                expiringSevenDays.add(consumable);
-            }
-        }
-        return expiringSevenDays;
-    }
-
-    public boolean isEmpty() {
-        return consumableList.isEmpty();
     }
 
     /**

@@ -6,12 +6,9 @@ import javax.swing.*;
 
 public class ConsumableTracker {
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                SwingUI app = new SwingUI();
-                app.displayMenu();
-            }
+        SwingUtilities.invokeLater(() -> {
+            SwingUI app = new SwingUI();
+            app.displayMenu();
         });
     }
 }

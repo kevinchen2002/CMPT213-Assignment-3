@@ -171,7 +171,7 @@ public class SwingUI implements ActionListener {
             DISPLAY_OPTION = 3;
             updateView();
         } else if (Objects.equals(e.getActionCommand(), "Add")) {
-            new AddConsumableUI(applicationFrame);
+            new AddConsumableDialog(applicationFrame);
             updateView();
         } else if (Objects.equals(e.getActionCommand(), "Remove")) {
             removeConsumable();

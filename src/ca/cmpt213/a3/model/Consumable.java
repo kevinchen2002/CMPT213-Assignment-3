@@ -15,30 +15,8 @@ public class Consumable implements Comparable<Consumable> {
     protected boolean isExpired;
     protected String type;
 
-    public Consumable() {
-
-    }
-
     public Consumable(String type) {
         this.type = type;
-    }
-
-    /**
-     * Getter for the name
-     *
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Getter for the expiry date
-     *
-     * @return the expiry date
-     */
-    public LocalDateTime getExpDate() {
-        return expDate;
     }
 
     /**

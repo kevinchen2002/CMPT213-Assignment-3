@@ -8,19 +8,16 @@ import com.github.lgooddatepicker.optionalusertools.DateTimeChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateTimeChangeEvent;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.annotation.Documented;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 //TODO: FIX FORMATTING
 //TODO: MAKE THE OK BUTTON RETURN SOMETHING
 
-public class AddConsumableUI extends JDialog implements ActionListener, DateTimeChangeListener {
+public class AddConsumableDialog extends JDialog implements ActionListener, DateTimeChangeListener {
     private boolean isFood = true;
     private LocalDateTime expDate;
     private final DateTimePicker dateTimePicker;
@@ -35,7 +32,7 @@ public class AddConsumableUI extends JDialog implements ActionListener, DateTime
     JTextField priceField;
     JTextField weightOrVolumeField;
 
-    public AddConsumableUI(Frame parent) {
+    public AddConsumableDialog(Frame parent) {
         super(parent, "Add", true);
 
         Point location = parent.getLocation();
