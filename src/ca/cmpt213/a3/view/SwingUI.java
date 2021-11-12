@@ -141,6 +141,7 @@ public class SwingUI implements ActionListener {
      */
     private void viewAllConsumables() {
         displayPane.setText(consumableManager.getAllConsumablesString());
+        displayPane.setCaretPosition(0);
     }
 
     /**
@@ -148,6 +149,7 @@ public class SwingUI implements ActionListener {
      */
     private void viewExpired() {
         displayPane.setText(consumableManager.getExpiredString());
+        displayPane.setCaretPosition(0);
     }
 
     /**
@@ -155,6 +157,7 @@ public class SwingUI implements ActionListener {
      */
     private void viewNotExpired() {
         displayPane.setText(consumableManager.getNotExpiredString());
+        displayPane.setCaretPosition(0);
     }
 
     /**
@@ -162,6 +165,7 @@ public class SwingUI implements ActionListener {
      */
     private void viewExpiringSevenDays() {
         displayPane.setText(consumableManager.getExpiringSevenDaysString());
+        displayPane.setCaretPosition(0);
     }
 
     /**
